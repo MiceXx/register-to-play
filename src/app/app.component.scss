@@ -1,0 +1,38 @@
+#main-img-logo{
+    margin: 1em;
+}
+
+#navbar {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-align: center;
+    list-style: none;
+    background: linear-gradient(#080808,#2c2c2c, #080808);
+
+    li{
+        display: inline-block;
+        line-height: 60px;
+        font-size: 20px;
+
+        a{
+            display: block;
+            text-align: center;
+            padding: 0 20px;
+            color: white;
+            text-decoration: none;
+        }
+    }
+}
+
+#navbar li:hover,
+#navbar li:hover:before {
+    background: #4e4e4e;
+}
+
+#main-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+}

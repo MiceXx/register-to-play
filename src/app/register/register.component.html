@@ -1,0 +1,73 @@
+<div *ngIf="!name; else forminfo">
+  <form [formGroup]="rForm" (ngSubmit)="addPost(rForm.value)">
+    <div class="form-container">
+      <div>
+        <h1>Tournament Registration </h1>
+        <label>Full Name
+          <span class="red-asterik">*</span>
+          <div class="alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">
+            This field is required
+          </div>
+          <a class="new-player" routerLink="../newplayer">New player?</a>
+          <input type="text" formControlName="name" placeholder="Full Name (Required)">
+        </label>
+
+        <label>CPL Number
+          <span class="red-asterik">*</span>
+          <div class="alert" *ngIf="!rForm.controls['cplNumber'].valid && rForm.controls['cplNumber'].touched">
+            Invalid CPL Number (Should be 6 digits)
+          </div>
+          <input type="text" formControlName="cplNumber" placeholder="CPL Number (Required)">
+        </label>
+        
+
+        <label>Email
+          <span class="red-asterik">*</span>
+          <div class="alert" *ngIf="!rForm.controls['email'].valid && rForm.controls['email'].touched">
+            Please enter a valid email
+          </div>
+          <input type="text" formControlName="email" placeholder="Email Address (Required)">
+        </label>
+        
+
+        <label>Comments
+            <textarea formControlName="comments" placeholder="Comments (Optional)"></textarea>
+        </label>
+
+        <div class="chkbox-line">
+          <input type="checkbox" name="dealer" formControlName="dealer" value="deal">
+          <label for="dealer">I am certified dealer and I am able to serve as a volunteer dealer at this tournament (Optional)</label>
+        </div>
+        
+        <div class="chkbox-line">
+          <input type="checkbox" name="terms" formControlName="terms" value="agree">
+          <label for="terms">I recognize that the prize pool available to the League is only made possible by funding provided by the host bars, and I agree to support the bar(s) by purchasing food/beverages at each event that I attend. </label>
+          <span class="red-asterik">*</span>
+          <div class="alert" *ngIf="!rForm.controls['terms'].valid && rForm.controls['terms'].touched">
+            This field is required
+          </div>
+        </div>
+
+        <div class="submit-line">
+          <input type="submit" name="submit-button" class="button expand" value="Submit" [disabled]="!rForm.valid">
+          <p>By clicking submit, you agree to the <a href="/assets/article70.pdf" target="_blank">terms and conditions</a>
+
+          </p>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #forminfo>
+  <div class="form-container">
+    <div class="row columns">
+      <h1>Registration Successful</h1>
+      <p>Thank you {{ name }}! You have successfully registered for the tournament</p>
+      <p>cpl: {{ cplNumber }} </p>
+      <p>email: {{ email }} </p>
+      <p>comments: {{ comments }}</p>
+      <p>dealer: {{ dealer }}</p>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,37 @@
+<h1>
+  Upcoming Events {{ date | date:'MMMM yyyy' }}
+</h1>
+<div class="event-list-wrapper">
+  <ul class="cal">
+    <li class="cal-event" (click)="getEvent(event.id)" *ngFor="let event of events | async">
+      <div class="cal-event-tile">
+        <div class="cal-event-tile-month">{{ event.data.date | date:'MMM' }}</div>
+        <div class="cal-event-tile-date">{{ event.data.date | date:'d' }}</div>
+      </div>
+      <div class="cal-event-desc">
+        <div class="cal-event-title">
+          {{ event.data.title }} 
+        </div>
+        <div class="cal-event-time">
+          <i class="fa fa-calendar"></i>
+          <div class="cal-event-time-content">
+              {{ event.data.date | date:'h:mm a, EEE d MMM' }}
+          </div>
+        </div>
+        <div class="cal-event-location">
+          <i class="fa fa-map-marker"></i>
+          <div class="cal-event-location-content">
+            {{event.data.location}}  
+          </div>
+        </div>
+        <div class="cal-event-description">
+          <div class="cal-event-description-content">
+            {{event.data.description}}  
+            </div>
+        </div>
+        <a class="cal-event-map" href="{{ getMap(event) }}" target="_blank">View Map</a>
+        <a class="cal-event-register" routerLink="{{ '../register/' + event.id }}">Register</a>
+      </div> 
+    </li>
+  </ul>
+</div>

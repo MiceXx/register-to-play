@@ -1,0 +1,59 @@
+<h2>Player Manager</h2>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>CPL Number</th>
+    <th>Dealer</th>
+  </tr>
+  <tr *ngFor="let player of players | async">
+    <td>{{ player.name }}</td>
+    <td>{{ player.email }}</td>
+    <td>{{ player.cplnumber }}</td>
+    <td>{{ player.dealer }}</td>
+  </tr>
+</table>
+
+<h2>Events Manager</h2>
+
+<div class="events-manager-container">
+  <label for="title">Title</label>
+  <input type="text" [(ngModel)]="title" name="title" placeholder="Title..">
+  <label for="date">Date</label>
+  <input type="datetime-local" [(ngModel)]="date" name="date">
+  <label for="location">Location</label>
+  <input type="text" [(ngModel)]="location" name="location" placeholder="location">
+  <label for="description">Description</label>
+  <textarea [(ngModel)]="description" name="description" placeholder="Description"></textarea>
+  <input type="submit" value="Create Event" (click)="addEvent()">
+</div>
+<div class="event-list-wrapper">
+  <ul class="cal">
+    <li class="cal-event" (click)="getEvent(event.id)" *ngFor="let event of events | async">
+      <div class="cal-event-desc">
+        <div class="cal-event-title">
+          {{ event.data.title }} 
+        </div>
+        <div class="cal-event-time">
+          <i class="fa fa-calendar"></i>
+          <div class="cal-event-time-content">
+              {{ event.data.date | date:'h:mm a, EEE d MMM' }}
+          </div>
+        </div>
+        <div class="cal-event-location">
+          <i class="fa fa-map-marker"></i>
+          <div class="cal-event-location-content">
+            {{event.data.location}}  
+          </div>
+        </div>
+        <div class="cal-event-description">
+          <div class="cal-event-description-content">
+            {{event.data.description}}  
+            </div>
+        </div>
+        <a class="cal-event-delete" (click)="deleteEvent(event.id)"> Delete Event</a>
+      </div> 
+    </li>
+  </ul>
+</div>
