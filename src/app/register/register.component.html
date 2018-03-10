@@ -2,7 +2,7 @@
   <form [formGroup]="rForm" (ngSubmit)="addPost(rForm.value)">
     <div class="form-container">
       <div>
-        <h1>Tournament Registration </h1>
+        <h1>{{ eventTitle }}</h1>
         <label>Full Name
           <span class="red-asterik">*</span>
           <div class="alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">

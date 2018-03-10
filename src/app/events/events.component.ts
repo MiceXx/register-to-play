@@ -3,16 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-interface Event {
-  title: string;
-  date: Date;
-  location: string;
-  description: string;
-}
-
-interface EventId extends Event {
-  id: string;
-}
+import { Event, EventId } from '../event';
 
 @Component({
   selector: 'app-events',

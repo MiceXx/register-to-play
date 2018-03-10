@@ -4,24 +4,8 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-interface Player {
-  name: string;
-  email: string;
-  cplnumber: string;
-  dealer: boolean;
-}
-
-interface Event {
-  title: string;
-  date: Date;
-  location: string;
-  description: string;
-}
-
-interface EventId extends Event {
-  id: string;
-}
-
+import { Player } from '../player';
+import { Event, EventId } from '../event';
 
 @Component({
   selector: 'app-admin',

@@ -1,15 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
-interface Player {
-  name: string;
-  email: string;
-  cplnumber: string;
-  dealer: boolean;
-}
+import { Player } from '../player';
 
 @Component({
   selector: 'app-register',
@@ -33,9 +29,12 @@ export class RegisterComponent implements OnInit {
   playerDoc: AngularFirestoreDocument<Player>;
   player: Observable<Player>;
 
+  eventId: string;
+  eventTitle: string;
+
   constructor(private fb: FormBuilder,
     private afs: AngularFirestore,
-    private route: ActivatedRoute,) {
+    private route: ActivatedRoute) {
       this.rForm = fb.group({
         'name': [null, Validators.required],
         'cplNumber': [null, Validators.compose([
@@ -48,7 +47,18 @@ export class RegisterComponent implements OnInit {
 
       this.playersCol = this.afs.collection('players');
 
-      this.route.params.subscribe(res => console.log(res.id));
+      this.route.params.subscribe(res => this.eventId = res.id);
+    }
+
+  ngOnInit() {
+    console.log(this.eventId);
+    this.afs.doc('events/' + this.eventId).ref.get().then((doc) => {
+    if (doc.exists) {
+        this.eventTitle = doc.data().title;
+      } else {
+        this.eventTitle = 'Something went wrong. Please go back to the main page and try';
+      }
+    });
   }
 
   addPost(post) {
@@ -60,9 +70,6 @@ export class RegisterComponent implements OnInit {
     this.addPlayer(this.name, this.email, this.cplNumber, this.dealer);
   }
 
-  ngOnInit() {
-
-  }
 
   addPlayer(name, email, cplnumber, dealer) {
     this.afs.collection('players').doc(cplnumber).set({
