@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
@@ -14,30 +15,30 @@ import { Event, EventId } from '../event';
 })
 export class AdminComponent implements OnInit {
 
+  rForm: FormGroup;
+
   title: string;
   date: Date;
   location: string;
   description: string;
 
-  eventsCol: AngularFirestoreCollection<Event>;
   events: any;
   eventDoc: AngularFirestoreDocument<Event>;
   event: Observable<Event>;
 
-  playersCol: AngularFirestoreCollection<Player>;
   players: any;
-  playerDoc: AngularFirestoreDocument<Player>;
-  player: Observable<Player>;
 
-  constructor(private afs: AngularFirestore) {
-
+  constructor(private fb: FormBuilder, private afs: AngularFirestore) {
+    this.rForm = fb.group({
+      'title': [null, Validators.required],
+      'date': [null, Validators.required],
+      'location': [null, Validators.required],
+      'description': [null, Validators.required],
+    });
   }
 
   ngOnInit() {
-    this.playersCol = this.afs.collection('players');
-
-    this.eventsCol = this.afs.collection('events');
-    this.events = this.eventsCol.snapshotChanges()
+    this.events = this.afs.collection('events').snapshotChanges()
       .map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data() as Event;
@@ -49,13 +50,25 @@ export class AdminComponent implements OnInit {
     this.players = this.getAllPlayers();
   }
 
-  addEvent() {
+  addEvent(form) {
+    const title = form.title;
+    let date = form.date;
+    const location = form.location;
+    const description = form.description;
+
+    if (!(date instanceof Date)) {
+      const currentdate = new Date();
+      date = currentdate.getDate();
+    }
+
     this.afs.collection('events').add({
-      'title': this.title,
-      'date': this.date,
-      'location': this.location,
-      'descrtiption': this.description
+      'title': title,
+      'date': date,
+      'location': location,
+      'descrtiption': description
     });
+
+    this.rForm.reset();
   }
 
   getEvent(eventId) {
@@ -67,21 +80,19 @@ export class AdminComponent implements OnInit {
     this.afs.doc('events/' + eventId).delete();
   }
 
-  getPlayer(playerId) {
-    this.playerDoc = this.afs.doc('players/' + playerId);
-    return this.playerDoc.valueChanges();
+  getPlayer(playerId) { // old
+    return this.afs.doc('players/' + playerId).valueChanges();
   }
 
-  getAllPlayers() {
-    this.playersCol = this.afs.collection('players');
-    return this.playersCol.valueChanges();
+  getAllPlayers() { // old
+    return this.afs.collection('players').valueChanges();
   }
 
-  deletePlayer(playerId) {
+  deletePlayer(playerId) { // old
     this.afs.doc('players/' + playerId).delete();
   }
 
-  getDealers() {
+  getDealers() { // old
     return this.afs.collection('players', ref => ref.where('dealer', '==', 'true'));
   }
 }

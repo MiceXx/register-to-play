@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
 
 import { Player } from '../player';
 
@@ -16,18 +14,14 @@ import { Player } from '../player';
 export class RegisterComponent implements OnInit {
 
   rForm: FormGroup;
-  post: any;
+  eventExists: boolean = true;
 
   name: string = '';
   cplNumber: string = '';
   email: string = '';
   comments: string = '';
   dealer: boolean = false;
-
-  playersCol: AngularFirestoreCollection<Player>;
-  players: any;
-  playerDoc: AngularFirestoreDocument<Player>;
-  player: Observable<Player>;
+  rSuccess: boolean = false;
 
   eventId: string;
   eventTitle: string;
@@ -45,37 +39,50 @@ export class RegisterComponent implements OnInit {
         'terms': [null, Validators.requiredTrue],
       });
 
-      this.playersCol = this.afs.collection('players');
-
       this.route.params.subscribe(res => this.eventId = res.id);
     }
 
   ngOnInit() {
-    console.log(this.eventId);
     this.afs.doc('events/' + this.eventId).ref.get().then((doc) => {
     if (doc.exists) {
         this.eventTitle = doc.data().title;
       } else {
-        this.eventTitle = 'Something went wrong. Please go back to the main page and try';
+        this.eventExists = false;
       }
     });
   }
 
-  addPost(post) {
-    this.name = post.name;
-    this.cplNumber = post.cplNumber;
-    this.email = post.email;
-    this.comments = post.comments;
-    this.dealer = post.dealer || false;
+  setPlayer(form) {
+    this.name = form.name;
+    this.email = form.email;
+    this.cplNumber = form.cplNumber;
+    this.dealer = form.dealer || false;
+    this.comments = form.comments;
+
     this.addPlayer(this.name, this.email, this.cplNumber, this.dealer);
+    this.registerPlayer(this.name, this.email, this.cplNumber, this.dealer);
+
   }
 
+  addPlayer(name, email, cplNumber, dealer) {
+    try {
+      this.afs.collection('players').doc(cplNumber).set({
+        'name': name,
+        'email': email,
+        'cplnumber': cplNumber,
+        'dealer': dealer,
+      });
+      this.rSuccess = true;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-  addPlayer(name, email, cplnumber, dealer) {
-    this.afs.collection('players').doc(cplnumber).set({
+  registerPlayer(name, email, cplNumber, dealer) {
+    this.afs.collection('events').doc(this.eventId).collection('players').doc(email).set({
       'name': name,
       'email': email,
-      'cplnumber': cplnumber,
+      'cplnumber': cplNumber,
       'dealer': dealer,
     });
   }

@@ -1,33 +1,46 @@
-<h2>Player Manager</h2>
+<h1>Events Manager</h1>
+<form [formGroup]="rForm" (ngSubmit)="addEvent(rForm.value);">
+  <div class="form-container">
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>CPL Number</th>
-    <th>Dealer</th>
-  </tr>
-  <tr *ngFor="let player of players | async">
-    <td>{{ player.name }}</td>
-    <td>{{ player.email }}</td>
-    <td>{{ player.cplnumber }}</td>
-    <td>{{ player.dealer }}</td>
-  </tr>
-</table>
+    <h1>Create an Event</h1>
 
-<h2>Events Manager</h2>
+    <label>Title
+      <span class="red-asterik">*</span>
+      <div class="alert" *ngIf="!rForm.controls['title'].valid && rForm.controls['title'].touched">
+        This field is required
+      </div>
+      <input type="text" formControlName="title" placeholder="Title">
+    </label>
 
-<div class="events-manager-container">
-  <label for="title">Title</label>
-  <input type="text" [(ngModel)]="title" name="title" placeholder="Title..">
-  <label for="date">Date</label>
-  <input type="datetime-local" [(ngModel)]="date" name="date">
-  <label for="location">Location</label>
-  <input type="text" [(ngModel)]="location" name="location" placeholder="location">
-  <label for="description">Description</label>
-  <textarea [(ngModel)]="description" name="description" placeholder="Description"></textarea>
-  <input type="submit" value="Create Event" (click)="addEvent()">
-</div>
+    <label>Date
+      <span class="red-asterik">*</span>
+      <div class="alert" *ngIf="!rForm.controls['date'].valid && rForm.controls['date'].touched">
+        This field is required
+      </div>
+      <input type="datetime-local" formControlName="date" placeholder="Date">
+    </label>
+
+    <label>Location
+      <span class="red-asterik">*</span>
+      <div class="alert" *ngIf="!rForm.controls['location'].valid && rForm.controls['location'].touched">
+        This field is required
+      </div>
+      <input type="text" formControlName="location" placeholder="Location">
+    </label>
+
+    <label>Description
+      <span class="red-asterik">*</span>
+      <div class="alert" *ngIf="!rForm.controls['description'].valid && rForm.controls['description'].touched">
+        This field is required
+      </div>
+      <input type="text" formControlName="description" placeholder="Description">
+    </label>
+
+    <input type="submit" name="submit-button" class="button expand" value="Create Event" [disabled]="!rForm.valid">
+ 
+  </div>
+</form>
+
 <div class="event-list-wrapper">
   <ul class="cal">
     <li class="cal-event" (click)="getEvent(event.id)" *ngFor="let event of events | async">
@@ -53,7 +66,25 @@
             </div>
         </div>
         <a class="cal-event-delete" (click)="deleteEvent(event.id)"> Delete Event</a>
+        <a class="cal-event-register">View Players</a>
       </div> 
     </li>
   </ul>
 </div>
+
+<h1>Player Manager</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>CPL Number</th>
+    <th>Dealer</th>
+  </tr>
+  <tr *ngFor="let player of players | async">
+    <td>{{ player.name }}</td>
+    <td>{{ player.email }}</td>
+    <td>{{ player.cplnumber }}</td>
+    <td>{{ player.dealer }}</td>
+  </tr>
+</table>
