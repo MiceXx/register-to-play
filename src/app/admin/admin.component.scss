@@ -5,66 +5,6 @@ h1{
   text-align: center;
 }
 
-.form-container {
-  display:block;
-  width:90%;
-  padding:2em;
-  margin: 2em auto;
-  background:#dbdbdb;
-border-radius: 5px;
-  box-shadow: 9px 7px 40px -6px rgba(0,0,0,0.25);
-}
-
-.cal-event-register {
-  display:inline-block;
-  background-color: #33e942;
-  color: #fff;
-  border:2px solid #33e942;
-  text-align:center;
-  font-weight: bold;
-  padding:.1em 1em;
-  border-radius:.2em;
-  text-decoration:none;
-  margin-top:.7em;
-  margin-left: 1em;
-   
-  &:hover {
-    background-color: #eca82a;
-    border:2px solid #eca82a;
-  }
-}
-
-input{
-  margin:1.5em 0 0 0;
-  height: auto;
-  box-sizing: content-box;
-  line-height: 20px;
-  font-size: 16px;
-  margin: 0 0 20px 0;
-  padding: 8px;
-}
-
-label{ //OVERRIDE VALUES
-  all:initial;
-  font-family: 'Raleway', 'Arial';
-}
-
-.alert {
-  background: #fd1111;
-  color: white;
-  padding: 2px;
-  font-size: .9em;
-  display: inline-block;
-  animation: 2s alertAnim forwards;
-}
-
-.red-asterik{
-  color: red;
-  padding: 0;
-  margin: 0;
-  font-size: 1.7em;
-}
-
 .event-list-wrapper{
   width: 100%;
   text-align: center;
@@ -104,6 +44,25 @@ label{ //OVERRIDE VALUES
 
 .cal-event-location-content, .cal-event-time-content{
     margin-left: 1em;
+  }
+}
+
+.cal-event-register {
+  display:inline-block;
+  background-color: #33e942;
+  color: #fff;
+  border:2px solid #33e942;
+  text-align:center;
+  font-weight: bold;
+  padding:.1em 1em;
+  border-radius:.2em;
+  text-decoration:none;
+  margin-top:.7em;
+  margin-left: 1em;
+   
+  &:hover {
+    background-color: #eca82a;
+    border:2px solid #eca82a;
   }
 }
 

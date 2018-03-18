@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -15,26 +13,14 @@ import { Event, EventId } from '../event';
 })
 export class AdminComponent implements OnInit {
 
-  rForm: FormGroup;
-
-  title: string;
-  date: Date;
-  location: string;
-  description: string;
-
   events: any;
   eventDoc: AngularFirestoreDocument<Event>;
   event: Observable<Event>;
 
-  players: any;
+  eventId: string;
+  eventPlayers: any;
 
-  constructor(private fb: FormBuilder, private afs: AngularFirestore) {
-    this.rForm = fb.group({
-      'title': [null, Validators.required],
-      'date': [null, Validators.required],
-      'location': [null, Validators.required],
-      'description': [null, Validators.required],
-    });
+  constructor(private afs: AngularFirestore) {
   }
 
   ngOnInit() {
@@ -46,53 +32,20 @@ export class AdminComponent implements OnInit {
           return { id, data };
         });
       });
-
-    this.players = this.getAllPlayers();
-  }
-
-  addEvent(form) {
-    const title = form.title;
-    let date = form.date;
-    const location = form.location;
-    const description = form.description;
-
-    if (!(date instanceof Date)) {
-      const currentdate = new Date();
-      date = currentdate.getDate();
-    }
-
-    this.afs.collection('events').add({
-      'title': title,
-      'date': date,
-      'location': location,
-      'descrtiption': description
-    });
-
-    this.rForm.reset();
   }
 
   getEvent(eventId) {
     this.eventDoc = this.afs.doc('events/' + eventId);
     this.event = this.eventDoc.valueChanges();
+    this.eventPlayers = this.getPlayersForEvent(eventId);
   }
 
   deleteEvent(eventId) {
     this.afs.doc('events/' + eventId).delete();
   }
 
-  getPlayer(playerId) { // old
-    return this.afs.doc('players/' + playerId).valueChanges();
+  getPlayersForEvent(eventId) {
+    return this.afs.collection('events').doc(eventId).collection('players').valueChanges();
   }
 
-  getAllPlayers() { // old
-    return this.afs.collection('players').valueChanges();
-  }
-
-  deletePlayer(playerId) { // old
-    this.afs.doc('players/' + playerId).delete();
-  }
-
-  getDealers() { // old
-    return this.afs.collection('players', ref => ref.where('dealer', '==', 'true'));
-  }
 }

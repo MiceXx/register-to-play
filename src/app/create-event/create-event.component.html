@@ -1,0 +1,41 @@
+<form [formGroup]="rForm" (ngSubmit)="addEvent(rForm.value);">
+    <div class="form-container">
+  
+      <h1>Create an Event</h1>
+  
+      <label>Title
+        <span class="red-asterik">*</span>
+        <div class="alert" *ngIf="!rForm.controls['title'].valid && rForm.controls['title'].touched">
+          This field is required
+        </div>
+        <input type="text" formControlName="title" placeholder="Title">
+      </label>
+  
+      <label>Date
+        <span class="red-asterik">*</span>
+        <div class="alert" *ngIf="!rForm.controls['date'].valid && rForm.controls['date'].touched">
+          This field is required
+        </div>
+        <input type="datetime-local" formControlName="date" placeholder="Date">
+      </label>
+  
+      <label>Location
+        <span class="red-asterik">*</span>
+        <div class="alert" *ngIf="!rForm.controls['location'].valid && rForm.controls['location'].touched">
+          This field is required
+        </div>
+        <input type="text" formControlName="location" placeholder="Location">
+      </label>
+  
+      <label>Description
+        <span class="red-asterik">*</span>
+        <div class="alert" *ngIf="!rForm.controls['description'].valid && rForm.controls['description'].touched">
+          This field is required
+        </div>
+        <input type="text" formControlName="description" placeholder="Description">
+      </label>
+  
+      <input type="submit" name="submit-button" class="button expand" value="Create Event" [disabled]="!rForm.valid">
+   
+    </div>
+  </form>

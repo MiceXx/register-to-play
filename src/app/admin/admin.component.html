@@ -1,90 +1,70 @@
 <h1>Events Manager</h1>
-<form [formGroup]="rForm" (ngSubmit)="addEvent(rForm.value);">
-  <div class="form-container">
 
-    <h1>Create an Event</h1>
+<app-create-event></app-create-event>
 
-    <label>Title
-      <span class="red-asterik">*</span>
-      <div class="alert" *ngIf="!rForm.controls['title'].valid && rForm.controls['title'].touched">
-        This field is required
-      </div>
-      <input type="text" formControlName="title" placeholder="Title">
-    </label>
-
-    <label>Date
-      <span class="red-asterik">*</span>
-      <div class="alert" *ngIf="!rForm.controls['date'].valid && rForm.controls['date'].touched">
-        This field is required
-      </div>
-      <input type="datetime-local" formControlName="date" placeholder="Date">
-    </label>
-
-    <label>Location
-      <span class="red-asterik">*</span>
-      <div class="alert" *ngIf="!rForm.controls['location'].valid && rForm.controls['location'].touched">
-        This field is required
-      </div>
-      <input type="text" formControlName="location" placeholder="Location">
-    </label>
-
-    <label>Description
-      <span class="red-asterik">*</span>
-      <div class="alert" *ngIf="!rForm.controls['description'].valid && rForm.controls['description'].touched">
-        This field is required
-      </div>
-      <input type="text" formControlName="description" placeholder="Description">
-    </label>
-
-    <input type="submit" name="submit-button" class="button expand" value="Create Event" [disabled]="!rForm.valid">
- 
-  </div>
-</form>
+<table>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>CPL Number</th>
+      <th>Dealer</th>
+    </tr>
+    <tr *ngFor="let player of eventPlayers | async">
+      <td>{{ player.name }}</td>
+      <td>{{ player.email }}</td>
+      <td>{{ player.cplnumber }}</td>
+      <td>{{ player.dealer }}</td>
+    </tr>
+  </table>
 
 <div class="event-list-wrapper">
   <ul class="cal">
     <li class="cal-event" (click)="getEvent(event.id)" *ngFor="let event of events | async">
-      <div class="cal-event-desc">
-        <div class="cal-event-title">
-          {{ event.data.title }} 
-        </div>
-        <div class="cal-event-time">
-          <i class="fa fa-calendar"></i>
-          <div class="cal-event-time-content">
-              {{ event.data.date | date:'h:mm a, EEE d MMM' }}
+      <div>
+        <div class="cal-event-desc">
+          <div class="cal-event-title">
+            {{ event.data.title }} 
           </div>
-        </div>
-        <div class="cal-event-location">
-          <i class="fa fa-map-marker"></i>
-          <div class="cal-event-location-content">
-            {{event.data.location}}  
-          </div>
-        </div>
-        <div class="cal-event-description">
-          <div class="cal-event-description-content">
-            {{event.data.description}}  
+          <div class="cal-event-time">
+            <i class="fa fa-calendar"></i>
+            <div class="cal-event-time-content">
+                {{ event.data.date | date:'h:mm a, EEE d MMM' }}
             </div>
-        </div>
-        <a class="cal-event-delete" (click)="deleteEvent(event.id)"> Delete Event</a>
-        <a class="cal-event-register">View Players</a>
-      </div> 
+          </div>
+          <div class="cal-event-location">
+            <i class="fa fa-map-marker"></i>
+            <div class="cal-event-location-content">
+              {{event.data.location}}  
+            </div>
+          </div>
+          <div class="cal-event-description">
+            <div class="cal-event-description-content">
+              {{event.data.description}}  
+              </div>
+          </div>
+          <a class="cal-event-delete" (click)="deleteEvent(event.id)"> Delete Event</a>
+          <a class="cal-event-register">View Players</a>
+        </div>        
+      </div>
     </li>
   </ul>
 </div>
 
-<h1>Player Manager</h1>
+<ng-template #playerlist>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>CPL Number</th>
+      <th>Dealer</th>
+    </tr>
+    <tr *ngFor="let player of eventPlayers | async">
+      <td>{{ player.name }}</td>
+      <td>{{ player.email }}</td>
+      <td>{{ player.cplnumber }}</td>
+      <td>{{ player.dealer }}</td>
+    </tr>
+  </table>
+</ng-template>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>CPL Number</th>
-    <th>Dealer</th>
-  </tr>
-  <tr *ngFor="let player of players | async">
-    <td>{{ player.name }}</td>
-    <td>{{ player.email }}</td>
-    <td>{{ player.cplnumber }}</td>
-    <td>{{ player.dealer }}</td>
-  </tr>
-</table>
+<app-player-list></app-player-list>

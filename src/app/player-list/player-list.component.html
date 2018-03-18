@@ -1,0 +1,16 @@
+<h1>Player Manager</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>CPL Number</th>
+    <th>Dealer</th>
+  </tr>
+  <tr *ngFor="let player of players | async">
+    <td>{{ player.name }}</td>
+    <td>{{ player.email }}</td>
+    <td>{{ player.cplnumber }}</td>
+    <td>{{ player.dealer }}</td>
+  </tr>
+</table>

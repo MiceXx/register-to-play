@@ -12,6 +12,8 @@ import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 import { AdminComponent } from './admin/admin.component';
 import { EventsComponent } from './events/events.component';
+import { CreateEventComponent } from './create-event/create-event.component';
+import { PlayerListComponent } from './player-list/player-list.component';
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import { EventsComponent } from './events/events.component';
     RegisterComponent,
     AdminComponent,
     EventsComponent,
+    CreateEventComponent,
+    PlayerListComponent,
   ],
   imports: [
     BrowserModule,

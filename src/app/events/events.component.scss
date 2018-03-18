@@ -43,13 +43,14 @@ h1{
   margin-right:2em;
   border-radius:.5em;
   box-shadow:0 2px 5px rgba(0,0,0,.1);
-  
-.cal-event-tile-date, .cal-event-tile-month {
+
+  .cal-event-tile-month, .cal-event-tile-date {
     width:4em;
-    line-height:1em;
+    line-height:2em;
     margin:0;
     padding:0;
-  }
+  }  
+
 }
 
 
@@ -127,13 +128,12 @@ h1{
     margin-right:2em;
     border-radius:.5em;
     box-shadow:0 2px 5px rgba(0,0,0,.1);
-  }
     
-  .cal-event-tile-date, .cal-event-tile-month {
-      width:2em;
-      line-height:1em;
-      margin:0;
-      padding:0;
+    .cal-event-tile-date, .cal-event-tile-month {
+        width:2em;
+        line-height:1em;
+        margin:0;
+        padding:0;
+    }
   }
-
 }
