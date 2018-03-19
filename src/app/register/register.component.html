@@ -69,17 +69,15 @@
 <ng-template #forminfo>
   <div *ngIf="eventExists; else eventexpired">
     <div class="form-container">
-      <div class="row columns">
-        <h1>Registration Successful</h1>
-        <p>Thank you {{ name }}! You have successfully registered for the tournament</p>
-        <p>cpl: {{ cplNumber }} </p>
-        <p>email: {{ email }} </p>
-        <p>comments: {{ comments }}</p>
-        <p *ngIf="dealer; else notdealer">&#10004; Available to deal</p>
-        <ng-template #notdealer>
-          <p>&#10008; Not available to deal</p>
-        </ng-template>
-      </div>
+      <h1>Registration Successful</h1>
+      <p>Thank you {{ name }}! You have successfully registered for the tournament</p>
+      <p>cpl: {{ cplNumber }} </p>
+      <p>email: {{ email }} </p>
+      <p>comments: {{ comments }}</p>
+      <p *ngIf="dealer; else notdealer">&#10004; Available to deal</p>
+      <ng-template #notdealer>
+        <p>&#10008; Not available to deal</p>
+      </ng-template>
     </div>
   </div>
 </ng-template>

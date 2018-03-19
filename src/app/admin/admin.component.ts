@@ -3,7 +3,6 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import { Player } from '../player';
 import { Event, EventId } from '../event';
 
 @Component({
@@ -37,15 +36,17 @@ export class AdminComponent implements OnInit {
   getEvent(eventId) {
     this.eventDoc = this.afs.doc('events/' + eventId);
     this.event = this.eventDoc.valueChanges();
-    this.eventPlayers = this.getPlayersForEvent(eventId);
+    this.eventId = eventId;
   }
 
   deleteEvent(eventId) {
+    this.getEvent(eventId);
     this.afs.doc('events/' + eventId).delete();
   }
 
   getPlayersForEvent(eventId) {
-    return this.afs.collection('events').doc(eventId).collection('players').valueChanges();
+    this.getEvent(eventId);
+    this.eventPlayers = this.afs.collection('events').doc(eventId).collection('players').valueChanges();
   }
 
 }
