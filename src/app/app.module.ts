@@ -14,6 +14,7 @@ import { AdminComponent } from './admin/admin.component';
 import { EventsComponent } from './events/events.component';
 import { CreateEventComponent } from './create-event/create-event.component';
 import { PlayerListComponent } from './player-list/player-list.component';
+import { EventManagerComponent } from './event-manager/event-manager.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { PlayerListComponent } from './player-list/player-list.component';
     EventsComponent,
     CreateEventComponent,
     PlayerListComponent,
+    EventManagerComponent,
   ],
   imports: [
     BrowserModule,

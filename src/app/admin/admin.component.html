@@ -1,75 +1,11 @@
-<h1>Events Manager</h1>
 
-<!--
-<app-create-event></app-create-event>
--->
-
-<div class="event-list-wrapper">
-  <ul class="cal">
-    <li class="cal-event" *ngFor="let event of events | async">
-      <div *ngIf="true; else playerlist">
-        <div class="cal-event-desc">
-          <div class="cal-event-title">
-            {{ event.data.title }} 
-          </div>
-          <div class="cal-event-time">
-            <i class="fa fa-calendar"></i>
-            <div class="cal-event-time-content">
-                {{ event.data.date | date:'h:mm a, EEE d MMM' }}
-            </div>
-          </div>
-          <div class="cal-event-location">
-            <i class="fa fa-map-marker"></i>
-            <div class="cal-event-location-content">
-              {{event.data.location}}  
-            </div>
-          </div>
-          <div class="cal-event-description">
-            <div class="cal-event-description-content">
-              {{event.data.description}}  
-              </div>
-          </div>
-          <a class="cal-event-delete" (click)="deleteEvent(event.id)"> Delete Event</a>
-          <a class="cal-event-register" (click)="getPlayersForEvent(event.id)">View Players</a>
-          <div *ngIf="eventId == event.id">
-            <table>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>CPL Number</th>
-                <th>Dealer</th>
-              </tr>
-              <tr *ngFor="let player of eventPlayers | async">
-                <td>{{ player.name }}</td>
-                <td>{{ player.email }}</td>
-                <td>{{ player.cplnumber }}</td>
-                <td>{{ player.dealer }}</td>
-              </tr>
-            </table>
-          </div>
-        </div>        
-      </div>
-    </li>
+<div class="main-navbar">
+  <h1>Administrative Tools</h1>
+  <ul id="navbar">
+    <li><a routerLink="create-event">Create Event</a></li>
+    <li><a routerLink="event-manager">Event Manager</a></li>
+    <li><a routerLink="player-list">Player List</a></li>
   </ul>
 </div>
 
-<ng-template #playerlist>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>CPL Number</th>
-      <th>Dealer</th>
-    </tr>
-    <tr *ngFor="let player of eventPlayers | async">
-      <td>{{ player.name }}</td>
-      <td>{{ player.email }}</td>
-      <td>{{ player.cplnumber }}</td>
-      <td>{{ player.dealer }}</td>
-    </tr>
-  </table>
-</ng-template>
-
-<!--
-<app-player-list></app-player-list>
--->
+<router-outlet></router-outlet>
