@@ -18,6 +18,7 @@ export class CreateEventComponent implements OnInit {
       'date': [null, Validators.required],
       'location': [null, Validators.required],
       'description': [null, Validators.required],
+      'maxplayers': [null, Validators.compose([Validators.pattern(/^[0-9]+$/), Validators.min(0)])],
     });
   }
 
@@ -29,6 +30,7 @@ export class CreateEventComponent implements OnInit {
     let date = form.date;
     const location = form.location;
     const description = form.description;
+    const maxplayers = form.maxplayers || 25;
 
     if (!(date instanceof Date)) {
       const currentdate = new Date();
@@ -39,7 +41,9 @@ export class CreateEventComponent implements OnInit {
       'title': title,
       'date': date,
       'location': location,
-      'descrtiption': description
+      'descrtiption': description,
+      'maxplayers': maxplayers,
+      'count': 0,
     });
 
     this.rForm.reset();

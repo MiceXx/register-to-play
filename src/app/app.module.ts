@@ -7,6 +7,7 @@ import { environment } from './../environments/environment';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
@@ -29,6 +30,7 @@ import { EventManagerComponent } from './event-manager/event-manager.component';
   ],
   imports: [
     BrowserModule,
+    AngularFontAwesomeModule,
     FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,

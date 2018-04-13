@@ -34,6 +34,13 @@
         </div>
         <input type="text" formControlName="description" placeholder="Description">
       </label>
+
+      <label>Max Players
+        <div class="alert" *ngIf="!rForm.controls['maxplayers'].valid">
+          Invalid Input
+        </div>
+        <input class="small-input" type="text" formControlName="maxplayers" placeholder="25">
+      </label>
   
       <input type="submit" name="submit-button" class="button expand" value="Create Event" [disabled]="!rForm.valid">
    

@@ -10,7 +10,7 @@
       </div>
       <div class="cal-event-desc">
         <div class="cal-event-title">
-          {{ event.data.title }} 
+          {{ event.data.title }}
         </div>
         <div class="cal-event-time">
           <i class="fa fa-calendar"></i>
@@ -31,6 +31,10 @@
         </div>
         <a class="cal-event-map" href="{{ getMap(event) }}" target="_blank">View Map</a>
         <a class="cal-event-register" routerLink="{{ '../register/' + event.id }}">Register</a>
+        <span>
+          {{ event.data.count ? event.data.count : 0 }} / {{ event.data.maxplayers }} seats available
+
+        </span>
       </div> 
     </li>
   </ul>

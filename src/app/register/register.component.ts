@@ -79,7 +79,22 @@ export class RegisterComponent implements OnInit {
   }
 
   registerPlayer(name, email, cplNumber, dealer) {
-    this.afs.collection('events').doc(this.eventId).collection('players').doc(email).set({
+    const event = this.afs.collection('events').doc(this.eventId);
+    event.ref.get().then(function(doc) {
+      const playerCount =  doc.data().count;
+      if (playerCount) {
+          event.update({
+            'count': playerCount + 1
+          });
+      } else {
+        event.update({
+          'count': 1
+        });
+      }
+    }).catch(function(error) {
+      console.log('Error getting document:', error);
+    });
+    event.collection('players').doc(email).set({
       'name': name,
       'email': email,
       'cplnumber': cplNumber,

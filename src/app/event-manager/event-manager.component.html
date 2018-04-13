@@ -1,9 +1,5 @@
 <h1>Events Manager</h1>
 
-<!--
-<app-create-event></app-create-event>
--->
-
 <div class="event-list-wrapper">
   <ul class="cal">
     <li class="cal-event" *ngFor="let event of events | async">
@@ -11,6 +7,7 @@
         <div class="cal-event-desc">
           <div class="cal-event-title">
             {{ event.data.title }}
+            <span class="cal-event-capacity">Capacity: {{ event.data.maxplayers || 25}}</span>
           </div>
           <div class="cal-event-time">
             <i class="fa fa-calendar"></i>
@@ -74,7 +71,3 @@
     </tr>
   </table>
 </ng-template>
-
-<!--
-<app-player-list></app-player-list>
--->
