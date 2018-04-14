@@ -30,11 +30,20 @@
             </div>
         </div>
         <a class="cal-event-map" href="{{ getMap(event) }}" target="_blank">View Map</a>
-        <a class="cal-event-register" routerLink="{{ '../register/' + event.id }}">Register</a>
-        <span>
-          {{ event.data.count ? event.data.count : 0 }} / {{ event.data.maxplayers }} seats available
-
+        <button class="cal-event-register" [disabled]="event.data.maxplayers <= event.data.count" routerLink="{{ '../register/' + event.id }}">Register</button>
+        <span *ngIf="event.data.maxplayers <= event.data.count; else fullEvent">
+          Registration Full
         </span>
+        <ng-template #fullEvent>
+            <span *ngIf="event.data.maxplayers - event.data.count < 2;else lastTen">
+              1 seat remaining
+            </span>
+          </ng-template>
+        <ng-template #lastTen>
+          <span *ngIf="event.data.maxplayers - event.data.count < 10;">
+              {{ event.data.maxplayers - event.data.count }} seats remaining
+          </span>
+        </ng-template>
       </div> 
     </li>
   </ul>

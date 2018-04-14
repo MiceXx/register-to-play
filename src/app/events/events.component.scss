@@ -94,6 +94,10 @@ h1{
     background-color: #eca82a;
     border:1px solid #eca82a;
   }
+  &:disabled {
+    background-color: #868686;
+    border:1px solid #868686;
+  }
 }
 
 .cal-event-location, .cal-event-time {
@@ -110,6 +114,7 @@ h1{
 }
   span{
     margin-left: 2em;
+    font-weight: 700;
   }
 
 @media (max-width: 750px) {
