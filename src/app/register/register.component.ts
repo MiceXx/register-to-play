@@ -15,6 +15,7 @@ export class RegisterComponent implements OnInit {
 
   rForm: FormGroup;
   eventExists: boolean = true;
+  alreadyRegistered: boolean = false;
 
   name: string = '';
   cplNumber: string = '';
@@ -59,46 +60,49 @@ export class RegisterComponent implements OnInit {
     this.dealer = form.dealer || false;
     this.comments = form.comments;
 
-    this.addPlayer(this.name, this.email, this.cplNumber, this.dealer);
-    this.registerPlayer(this.name, this.email, this.cplNumber, this.dealer);
-
-  }
-
-  addPlayer(name, email, cplNumber, dealer) {
     try {
-      this.afs.collection('players').doc(cplNumber).set({
-        'name': name,
-        'email': email,
-        'cplnumber': cplNumber,
-        'dealer': dealer,
-      });
-      this.rSuccess = true;
+      this.registerPlayer(this.name, this.email, this.cplNumber, this.dealer);
     } catch (error) {
       console.error(error);
     }
+
   }
 
   registerPlayer(name, email, cplNumber, dealer) {
     const event = this.afs.collection('events').doc(this.eventId);
-    event.ref.get().then(function(doc) {
-      const playerCount =  doc.data().count;
-      if (playerCount) {
-          event.update({
-            'count': playerCount + 1
-          });
-      } else {
-        event.update({
-          'count': 1
-        });
+    const playersCol = this.afs.collection('players');
+    let playerCount;
+
+    event.ref.get().then((doc) => {
+      playerCount =  doc.data().count || 0;
+      const maxPlayers = doc.data().maxplayers || 25;
+      if (playerCount >= maxPlayers) {
+        this.eventExists = false;
       }
-    }).catch(function(error) {
-      console.log('Error getting document:', error);
     });
-    event.collection('players').doc(email).set({
-      'name': name,
-      'email': email,
-      'cplnumber': cplNumber,
-      'dealer': dealer,
+
+    event.collection('players').doc(email).ref.get().then((playerDoc) => {
+      if (playerDoc.exists) {
+        this.alreadyRegistered = true;
+      } else {
+        event.collection('players').doc(email).set({ // add to event collection
+          'name': name,
+          'email': email,
+          'cplnumber': cplNumber,
+          'dealer': dealer,
+        });
+        playersCol.doc(email).set({ // add to master player collection
+          'name': name,
+          'email': email,
+          'cplnumber': cplNumber,
+          'dealer': dealer,
+        });
+
+        event.update({ // update player count
+          'count': playerCount + 1
+        });
+        this.rSuccess = true;
+      }
     });
   }
 

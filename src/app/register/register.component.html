@@ -1,68 +1,76 @@
 <div *ngIf="!rSuccess; else forminfo">
   <div *ngIf="eventExists; else eventexpired">
-    <form [formGroup]="rForm" (ngSubmit)="setPlayer(rForm.value);">
-      <div class="form-container">
-          <h1>{{ eventTitle }}</h1>
-          
-          <label>Full Name
-            <span class="red-asterik">*</span>
-            <div class="alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">
-              This field is required
+    <div *ngIf="!alreadyRegistered; else playerexists">
+      <form [formGroup]="rForm" (ngSubmit)="setPlayer(rForm.value);">
+        <div class="form-container">
+            <h1>{{ eventTitle }}</h1>
+            
+            <label>Full Name
+              <span class="red-asterik">*</span>
+              <div class="alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">
+                This field is required
+              </div>
+              <a class="new-player" (click)="toggleNewplayer()">New player?</a>
+              <input type="text" formControlName="name" placeholder="Full Name (Required)">
+            </label>
+
+            <label>CPL Number
+              <span class="red-asterik">*</span>
+              <div class="alert" *ngIf="!rForm.controls['cplNumber'].valid && rForm.controls['cplNumber'].touched">
+                Invalid CPL Number (Should be 6 digits)
+              </div>
+              <input type="text" formControlName="cplNumber" placeholder="CPL Number (Required)">
+            </label>
+            
+
+            <label>Email
+              <span class="red-asterik">*</span>
+              <div class="alert" *ngIf="!rForm.controls['email'].valid && rForm.controls['email'].touched">
+                Please enter a valid email
+              </div>
+              <input type="text" formControlName="email" placeholder="Email Address (Required)">
+            </label>
+            
+
+            <label>Comments
+                <textarea formControlName="comments" placeholder="Comments (Optional)"></textarea>
+            </label>
+
+            <div class="chkbox-line">
+              <input type="checkbox" name="dealer" formControlName="dealer" value="deal">
+              <label for="dealer">I am certified dealer and I am able to serve as a volunteer dealer at this tournament (Optional)</label>
             </div>
-            <a class="new-player" routerLink="../newplayer">New player?</a>
-            <input type="text" formControlName="name" placeholder="Full Name (Required)">
-          </label>
-
-          <label>CPL Number
-            <span class="red-asterik">*</span>
-            <div class="alert" *ngIf="!rForm.controls['cplNumber'].valid && rForm.controls['cplNumber'].touched">
-              Invalid CPL Number (Should be 6 digits)
+            
+            <div class="chkbox-line">
+              <input type="checkbox" name="terms" formControlName="terms" value="agree">
+              <label for="terms">I recognize that the prize pool available to the League is only made possible by funding provided by the host bars, and I agree to support the bar(s) by purchasing food/beverages at each event that I attend. </label>
+              <span class="red-asterik">*</span>
+              <div class="alert" *ngIf="!rForm.controls['terms'].valid && rForm.controls['terms'].touched">
+                This field is required
+              </div>
             </div>
-            <input type="text" formControlName="cplNumber" placeholder="CPL Number (Required)">
-          </label>
-          
 
-          <label>Email
-            <span class="red-asterik">*</span>
-            <div class="alert" *ngIf="!rForm.controls['email'].valid && rForm.controls['email'].touched">
-              Please enter a valid email
+            <div class="submit-line">
+              <input type="submit" name="submit-button" class="button expand" value="Submit" [disabled]="!rForm.valid">
+              <p>By clicking submit, you agree to the <a href="/assets/article70.pdf" target="_blank">terms and conditions</a>
+
+              </p>
             </div>
-            <input type="text" formControlName="email" placeholder="Email Address (Required)">
-          </label>
-          
-
-          <label>Comments
-              <textarea formControlName="comments" placeholder="Comments (Optional)"></textarea>
-          </label>
-
-          <div class="chkbox-line">
-            <input type="checkbox" name="dealer" formControlName="dealer" value="deal">
-            <label for="dealer">I am certified dealer and I am able to serve as a volunteer dealer at this tournament (Optional)</label>
-          </div>
-          
-          <div class="chkbox-line">
-            <input type="checkbox" name="terms" formControlName="terms" value="agree">
-            <label for="terms">I recognize that the prize pool available to the League is only made possible by funding provided by the host bars, and I agree to support the bar(s) by purchasing food/beverages at each event that I attend. </label>
-            <span class="red-asterik">*</span>
-            <div class="alert" *ngIf="!rForm.controls['terms'].valid && rForm.controls['terms'].touched">
-              This field is required
-            </div>
-          </div>
-
-          <div class="submit-line">
-            <input type="submit" name="submit-button" class="button expand" value="Submit" [disabled]="!rForm.valid">
-            <p>By clicking submit, you agree to the <a href="/assets/article70.pdf" target="_blank">terms and conditions</a>
-
-            </p>
-          </div>
-      </div>
-    </form>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 
 <ng-template #eventexpired>
   <div class="form-container">
     <p>The registration for this event has expired. Please select another event</p>
+  </div>
+</ng-template>
+
+<ng-template #playerexists>
+  <div class="form-container">
+    <p>You have already registered for this event</p>
   </div>
 </ng-template>
 
