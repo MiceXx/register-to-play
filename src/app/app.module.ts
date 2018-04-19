@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule , ReactiveFormsModule} from '@angular/forms';
 
+import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from './../environments/environment';
 
@@ -33,6 +34,7 @@ import { EventManagerComponent } from './event-manager/event-manager.component';
     AngularFontAwesomeModule,
     FormsModule,
     AppRoutingModule,
+    HttpModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,

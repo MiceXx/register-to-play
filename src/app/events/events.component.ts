@@ -42,7 +42,7 @@ export class EventsComponent implements OnInit {
     return 'https://maps.google.com/?q=' + event.data.location;
   };
 
-  getEvent(eventId) {
+  getEvent(eventId: string) {
     this.eventDoc = this.afs.doc('events/' + eventId);
     this.event = this.eventDoc.valueChanges();
     console.log(eventId);

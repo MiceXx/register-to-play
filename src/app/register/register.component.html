@@ -10,7 +10,7 @@
               <div class="alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">
                 This field is required
               </div>
-              <a class="new-player" (click)="toggleNewplayer()">New player?</a>
+              <a class="new-player" (click)="sendEmail()">New player?</a>
               <input type="text" formControlName="name" placeholder="Full Name (Required)">
             </label>
 

@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { Http, Headers, Response, URLSearchParams, RequestOptions } from '@angular/http';
 import { ActivatedRoute } from '@angular/router';
+import 'rxjs/add/operator/toPromise';
 
 import { Player } from '../player';
+
+import {enableProdMode} from '@angular/core';
+
+enableProdMode();
 
 @Component({
   selector: 'app-register',
@@ -29,7 +35,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private afs: AngularFirestore,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private http: Http) {
       this.rForm = fb.group({
         'name': [null, Validators.required],
         'cplNumber': [null, Validators.compose([
@@ -68,7 +75,7 @@ export class RegisterComponent implements OnInit {
 
   }
 
-  registerPlayer(name, email, cplNumber, dealer) {
+  registerPlayer(name: string, email: string, cplNumber: string, dealer: boolean) {
     const event = this.afs.collection('events').doc(this.eventId);
     const playersCol = this.afs.collection('players');
     let playerCount;
@@ -104,6 +111,27 @@ export class RegisterComponent implements OnInit {
         this.rSuccess = true;
       }
     });
+  }
+
+  sendEmail() {
+    const url = 'https://your-cloud-function-url/function';
+    const params: URLSearchParams = new URLSearchParams();
+    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+    const options = new RequestOptions({headers: headers});
+
+    params.set('to', 'accmxx@gmail.com');
+    params.set('from', 'you@yoursupercoolapp.com');
+    params.set('subject', 'test-email');
+    params.set('content', 'Hello World');
+
+    return this.http.post(url, params, options)
+                    .toPromise()
+                    .then( res => {
+                      console.log(res);
+                    })
+                    .catch(err => {
+                      console.log(err);
+                    });
   }
 
 }
