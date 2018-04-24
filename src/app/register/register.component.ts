@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Http, Headers, Response, URLSearchParams, RequestOptions } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute } from '@angular/router';
-import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/map';
 
 import { Player } from '../player';
 
@@ -114,24 +114,26 @@ export class RegisterComponent implements OnInit {
   }
 
   sendEmail() {
-    const url = 'https://your-cloud-function-url/function';
-    const params: URLSearchParams = new URLSearchParams();
+    const url = 'http://localhost:3001/newplayer';
     const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
     const options = new RequestOptions({headers: headers});
 
-    params.set('to', 'accmxx@gmail.com');
-    params.set('from', 'you@yoursupercoolapp.com');
-    params.set('subject', 'test-email');
-    params.set('content', 'Hello World');
+    const body = {
+      to: 'accmxx@gmail.com',
+      name: 'Michael',
+      event_name: 'test-email event'
+    };
 
-    return this.http.post(url, params, options)
-                    .toPromise()
-                    .then( res => {
-                      console.log(res);
-                    })
-                    .catch(err => {
-                      console.log(err);
-                    });
+    return this.http.post(url, body, options)
+                    .map((res: Response) =>  res.json())
+                    .subscribe(
+                      res => {
+                        console.log(res);
+                      },
+                      err => {
+                        console.log(err);
+                      }
+                    );
   }
 
 }
