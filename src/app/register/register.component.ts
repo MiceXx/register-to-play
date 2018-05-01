@@ -29,6 +29,7 @@ export class RegisterComponent implements OnInit {
   comments: string = '';
   dealer: boolean = false;
   rSuccess: boolean = false;
+  newPlayerString: string = '';
 
   eventId: string;
   eventTitle: string;
@@ -60,6 +61,10 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  newplayer() {
+    this.newPlayerString = '******';
+  }
+
   setPlayer(form) {
     this.name = form.name;
     this.email = form.email;
@@ -78,12 +83,16 @@ export class RegisterComponent implements OnInit {
   registerPlayer(name: string, email: string, cplNumber: string, dealer: boolean) {
     const event = this.afs.collection('events').doc(this.eventId);
     const playersCol = this.afs.collection('players');
-    let playerCount;
+    let eventPlayerCount, eventTitle, eventLocation, eventDescription, eventDate;
 
     event.ref.get().then((doc) => {
-      playerCount =  doc.data().count || 0;
+      eventPlayerCount =  doc.data().count || 0;
+      eventTitle =  doc.data().title;
+      eventLocation =  doc.data().description;
+      eventDescription =  doc.data().location;
+      eventDate = doc.data().date;
       const maxPlayers = doc.data().maxplayers || 25;
-      if (playerCount >= maxPlayers) {
+      if (eventPlayerCount >= maxPlayers) {
         this.eventExists = false;
       }
     });
@@ -106,34 +115,57 @@ export class RegisterComponent implements OnInit {
         });
 
         event.update({ // update player count
-          'count': playerCount + 1
+          'count': eventPlayerCount + 1
         });
         this.rSuccess = true;
       }
     });
+
+    const eventMsg = eventTitle + ':' + eventDescription + ' at ' + eventLocation + ' ' + eventDate;
+    this.sendEmail(email, name, eventMsg);
   }
 
-  sendEmail() {
+  sendEmail(mTo, mName, mEventName) {
     const url = 'http://localhost:3001/newplayer';
     const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
     const options = new RequestOptions({headers: headers});
+    const directorEmail = 'Canada@CanadianPokerLeague.com';
 
     const body = {
       to: 'accmxx@gmail.com',
-      name: 'Michael',
-      event_name: 'test-email event'
+      name: mName,
+      event_name: 'test-email event',
     };
 
-    return this.http.post(url, body, options)
-                    .map((res: Response) =>  res.json())
-                    .subscribe(
-                      res => {
-                        console.log(res);
-                      },
-                      err => {
-                        console.log(err);
-                      }
-                    );
+    this.http.post(url, body, options)
+      .map((res: Response) =>  res.json())
+      .subscribe(
+        res => {
+          console.log(res);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+
+    if (this.newPlayerString ===  '******') {
+      const body2 = {
+        to: directorEmail,
+        name: mName,
+        event_name: 'test-email event' + mTo,
+      };
+      this.http.post(url, body2, options)
+      .map((res: Response) =>  res.json())
+      .subscribe(
+        res => {
+          console.log(res);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
+    return;
   }
 
 }
