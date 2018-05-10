@@ -9,6 +9,7 @@ import { Player } from '../player';
 
 import {enableProdMode} from '@angular/core';
 
+
 enableProdMode();
 
 @Component({
@@ -41,7 +42,7 @@ export class RegisterComponent implements OnInit {
       this.rForm = fb.group({
         'name': [null, Validators.required],
         'cplNumber': [null, Validators.compose([
-          Validators.required, Validators.minLength(6), Validators.maxLength(6)])],
+          Validators.required, Validators.minLength(5), Validators.maxLength(5)])],
         'email': [null, Validators.compose([Validators.required, Validators.email])],
         'comments': [null, Validators.maxLength(200)],
         'dealer': null,
@@ -62,7 +63,7 @@ export class RegisterComponent implements OnInit {
   }
 
   newplayer() {
-    this.newPlayerString = '******';
+    this.newPlayerString = '*****';
   }
 
   setPlayer(form) {
@@ -126,7 +127,11 @@ export class RegisterComponent implements OnInit {
   }
 
   sendEmail(mTo, mName, mEventName) {
-    const url = 'http://localhost:3001/newplayer';
+    /*
+    https://tpl-admin-page.herokuapp.com/newplayer
+    http://localhost:3001/newplayer
+    */
+    const url = 'https://tpl-admin-page.herokuapp.com/newplayer';
     const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
     const options = new RequestOptions({headers: headers});
     const directorEmail = 'Canada@CanadianPokerLeague.com';
