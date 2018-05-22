@@ -10,14 +10,15 @@
               <div class="alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">
                 This field is required
               </div>
-              <a class="new-player" (click)="sendEmail(); newplayer()">New player?</a>
+              <a class="new-player" (click)="newplayer()">New player?</a>
+              <!-- <a class="new-player" (click)="testfn()">New player?</a> -->
               <input type="text" formControlName="name" placeholder="Full Name (Required)">
             </label>
 
             <label>CPL Number
               <span class="red-asterik">*</span>
               <div class="alert" *ngIf="!rForm.controls['cplNumber'].valid && rForm.controls['cplNumber'].touched">
-                Invalid CPL Number (Should be 6 digits)
+                Invalid CPL Number (Should be 5 digits)
               </div>
               <input type="text" formControlName="cplNumber" placeholder="CPL Number (Required)" [(ngModel)]="newPlayerString">
             </label>

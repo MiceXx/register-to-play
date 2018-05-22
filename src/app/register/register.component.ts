@@ -33,7 +33,13 @@ export class RegisterComponent implements OnInit {
   newPlayerString: string = '';
 
   eventId: string;
+
   eventTitle: string;
+  eventPlayerCount: Number;
+  eventLocation: string;
+  eventDescription: string;
+  eventDate: string;
+  maxPlayers: Number;
 
   constructor(private fb: FormBuilder,
     private afs: AngularFirestore,
@@ -56,6 +62,12 @@ export class RegisterComponent implements OnInit {
     this.afs.doc('events/' + this.eventId).ref.get().then((doc) => {
     if (doc.exists) {
         this.eventTitle = doc.data().title;
+        this.eventPlayerCount =  doc.data().count || 0;
+        this.eventTitle =  doc.data().title;
+        this.eventLocation =  doc.data().location;
+        this.eventDescription =  doc.data().description;
+        this.eventDate = doc.data().date;
+        this.maxPlayers = doc.data().maxplayers || 25;
       } else {
         this.eventExists = false;
       }
@@ -84,19 +96,10 @@ export class RegisterComponent implements OnInit {
   registerPlayer(name: string, email: string, cplNumber: string, dealer: boolean) {
     const event = this.afs.collection('events').doc(this.eventId);
     const playersCol = this.afs.collection('players');
-    let eventPlayerCount, eventTitle, eventLocation, eventDescription, eventDate;
 
-    event.ref.get().then((doc) => {
-      eventPlayerCount =  doc.data().count || 0;
-      eventTitle =  doc.data().title;
-      eventLocation =  doc.data().description;
-      eventDescription =  doc.data().location;
-      eventDate = doc.data().date;
-      const maxPlayers = doc.data().maxplayers || 25;
-      if (eventPlayerCount >= maxPlayers) {
+    if (this.eventPlayerCount >= this.maxPlayers) {
         this.eventExists = false;
-      }
-    });
+    }
 
     event.collection('players').doc(email).ref.get().then((playerDoc) => {
       if (playerDoc.exists) {
@@ -116,33 +119,40 @@ export class RegisterComponent implements OnInit {
         });
 
         event.update({ // update player count
-          'count': eventPlayerCount + 1
+          'count': +this.eventPlayerCount + 1
         });
         this.rSuccess = true;
       }
     });
 
-    const eventMsg = eventTitle + ':' + eventDescription + ' at ' + eventLocation + ' ' + eventDate;
-    this.sendEmail(email, name, eventMsg);
+    const eventName = this.eventTitle + ':' + this.eventDescription;
+    const eventDetails = this.eventLocation + ', ' + this.eventDate;
+    this.sendEmail(email, name, eventName, eventDetails);
   }
 
-  sendEmail(mTo, mName, mEventName) {
+  testfn() {
+    // this.sendEmail('accmxx@gmail.com', 'Michael', 'eventName', 'eventDetails');
+
+    console.log(this.eventPlayerCount, this.eventTitle, this.eventLocation, this.eventDescription);
+    console.log('date ' + this.eventDate);
+  }
+
+  sendEmail(mTo, mName, mEventName, mEventDetail) {
     /*
     https://tpl-admin-page.herokuapp.com/newplayer
     http://localhost:3001/newplayer
     */
     const url = 'https://tpl-admin-page.herokuapp.com/newplayer';
-    const headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-    const options = new RequestOptions({headers: headers});
-    const directorEmail = 'Canada@CanadianPokerLeague.com';
+    const directorEmail = 'accmxx@gmail.com'; // 'Canada@CanadianPokerLeague.com';
 
     const body = {
-      to: 'accmxx@gmail.com',
+      to: mTo,
       name: mName,
-      event_name: 'test-email event',
+      event_name: mEventName,
+      event_details: mEventDetail,
     };
 
-    this.http.post(url, body, options)
+    this.http.post(url, body)
       .map((res: Response) =>  res.json())
       .subscribe(
         res => {
@@ -157,9 +167,10 @@ export class RegisterComponent implements OnInit {
       const body2 = {
         to: directorEmail,
         name: mName,
-        event_name: 'test-email event' + mTo,
+        event_name: mEventName,
+        event_details: mTo,
       };
-      this.http.post(url, body2, options)
+      this.http.post(url, body2)
       .map((res: Response) =>  res.json())
       .subscribe(
         res => {
